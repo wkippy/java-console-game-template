@@ -33,7 +33,9 @@ public class Room {
     public void setMonster(Monster m) {
         this.monster = m;
     }
-
+    public String getDescription() {
+        return description;
+    }
     public String describe() {
         StringBuilder sb = new StringBuilder(name + ": " + description);
         if (!items.isEmpty()) {

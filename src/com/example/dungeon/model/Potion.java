@@ -8,6 +8,10 @@ public class Potion extends Item {
         this.heal = heal;
     }
 
+    public int getHeal() {
+        return heal;
+    }
+
     @Override
     public void apply(GameState ctx) {
         Player p = ctx.getPlayer();

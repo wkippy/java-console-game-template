@@ -1,9 +1,16 @@
 package com.example.dungeon.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class GameState {
     private Player player;
     private Room current;
     private int score;
+    private Map<String, Room> world = new HashMap<>(); // NEW
+
+    public Map<String, Room> getWorld() { return world; } // NEW
+    public void setWorld(Map<String, Room> world) { this.world = world; }
 
     public Player getPlayer() {
         return player;
