@@ -247,11 +247,17 @@ public class Game {
             Room current = ctx.getCurrent();
             System.out.println(current.describe());
 
-            // Проверяем запертые двери
+            if (current.getName().equals("Сокровищница")) {
+                Room cave = ctx.getWorld().get("Пещера");
+                if (cave != null && !current.getNeighbors().containsValue(cave)) {
+                    System.out.println("🚪 Вы видите запертую дверь на юг. Нужен ключ.");
+                }
+            }
+
             if (current.getName().equals("Пещера")) {
                 Room treasure = ctx.getWorld().get("Сокровищница");
                 if (treasure != null && !current.getNeighbors().containsValue(treasure)) {
-                    System.out.println("Вы видите запертую дверь на север. Нужен ключ.");
+                    System.out.println("🚪 Вы видите запертую дверь на север. Нужен ключ.");
                 }
             }
         });
@@ -412,13 +418,14 @@ public class Game {
         Room square = new Room("Площадь", "Каменная площадь с фонтаном.");
         Room forest = new Room("Лес", "Шелест листвы и птичий щебет.");
         Room cave = new Room("Пещера", "Темно и сыро.");
-        Room treasure = new Room("Сокровищница", "Комната полная сокровищ! Но дверь заперта."); // новое
+        Room treasure = new Room("Сокровищница", "Комната полная сокровищ! Но дверь вдруг захлопнулась...");
 
         square.getNeighbors().put("north", forest);
         forest.getNeighbors().put("south", square);
         forest.getNeighbors().put("east", cave);
         cave.getNeighbors().put("west", forest);
         cave.getNeighbors().put("north", treasure); // новое + ключ нужен
+        //treasure.getNeighbors().put("south", cave);// выход из сокровищницы
 
         forest.getItems().add(new Potion("Малое зелье", 5));
         forest.getItems().add(new Key("Золотой ключ")); // NEW
