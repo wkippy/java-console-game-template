@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dungeon Mini - Тест</title>
+</head>
+<body style="background: #1e3c72; color: white; font-family: Arial; padding: 20px;">
+    <h1>🏰 DUNGEON MINI - ТЕСТ</h1>
+    <p>Эта страница для диагностики проблем.</p>
+    
+    <button onclick="testStartGame()" style="background: #ff6b35; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+        🎮 Начать игру (Тест)
+    </button>
+    
+    <div id="test-output" style="margin-top: 20px; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 5px;">
+        Ждем действий...
+    </div>
+
+    <script>
+        function testStartGame() {
+            console.log('Тестовая функция запущена');
+            document.getElementById('test-output').innerHTML = '✅ JavaScript работает!';
+            
+            // Проверяем основные функции
+            try {
+                if (typeof showCommands === 'function') {
+                    document.getElementById('test-output').innerHTML += '<br>✅ showCommands найдена';
+                } else {
+                    document.getElementById('test-output').innerHTML += '<br>❌ showCommands не найдена';
+                }
+                
+                if (typeof startGame === 'function') {
+                    document.getElementById('test-output').innerHTML += '<br>✅ startGame найдена';
+                } else {
+                    document.getElementById('test-output').innerHTML += '<br>❌ startGame не найдена';
+                }
+                
+                // Проверяем класс игры
+                if (typeof DungeonGame === 'function') {
+                    document.getElementById('test-output').innerHTML += '<br>✅ DungeonGame найдена';
+                } else {
+                    document.getElementById('test-output').innerHTML += '<br>❌ DungeonGame не найдена';
+                }
+                
+            } catch (error) {
+                document.getElementById('test-output').innerHTML += '<br>❌ Ошибка: ' + error.message;
+            }
+        }
+        
+        // Проверяем загрузку при старте страницы
+        window.addEventListener('load', function() {
+            console.log('Страница загружена');
+            document.getElementById('test-output').innerHTML = 'Страница загружена. Жмите кнопку для теста.';
+        });
+    </script>
+</body>
+</html>

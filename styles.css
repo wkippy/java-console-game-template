@@ -1,0 +1,1024 @@
+/* Основные стили */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    min-height: 100vh;
+    color: #ffffff;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Экраны */
+.screen {
+    display: none;
+    min-height: 100vh;
+    padding-top: 2rem;
+}
+
+.screen.active {
+    display: block;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Заголовок игры */
+.game-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.game-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 3.5rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+    background: linear-gradient(45deg, #ffd700, #ffed4a, #ff6b35);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+.game-subtitle {
+    font-size: 1.2rem;
+    color: #b0c4de;
+    font-weight: 300;
+}
+
+@keyframes glow {
+    from { filter: brightness(1); }
+    to { filter: brightness(1.2); }
+}
+
+/* Кнопки */
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    margin: 8px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #ff6b35, #ff8e53);
+    color: white;
+}
+
+.btn-secondary {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+}
+
+.btn-info {
+    background: linear-gradient(45deg, #11998e, #38ef7d);
+    color: white;
+}
+
+.btn-back {
+    background: linear-gradient(45deg, #6c757d, #9ca3af);
+    color: white;
+}
+
+.btn-small {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    margin: 4px;
+}
+
+.btn-execute {
+    background: linear-gradient(45deg, #28a745, #20c997);
+    color: white;
+    padding: 8px 12px;
+    margin: 4px;
+}
+
+.btn-execute:hover {
+    background: linear-gradient(45deg, #20c997, #28a745);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* Группы кнопок */
+.menu-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+
+/* Секции команд */
+.commands-section, .about-section {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 2rem;
+    margin-top: 2rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.commands-section h2,
+.about-section h2 {
+    font-family: 'Orbitron', monospace;
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #ffd700;
+}
+
+/* Сетка команд */
+.commands-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.command-category {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.command-category h3 {
+    color: #ffd700;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+    border-bottom: 2px solid #ffd700;
+    padding-bottom: 0.5rem;
+}
+
+.command-item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    padding: 0.8rem;
+    background: rgba(255 just-in-time 255, 255, 0.05);
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+}
+
+.command-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.command {
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    color: #f06292;
+    margin-bottom: 0.3rem;
+    font-size: 1rem;
+}
+
+.description {
+    color: #e8e8e8;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* Подвал команд */
+.commands-footer {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+/* Информация об игре */
+.about-content {
+    line-height: 1.6;
+}
+
+.about-content h3 {
+    color: #ffd700;
+    margin: 1.5rem 0 0.8rem 0;
+    font-size: 1.2rem;
+}
+
+.about-content ul {
+    margin-left: 2rem;
+    margin-bottom: 1rem;
+}
+
+.about-content li {
+    margin-bottom: 0.5rem;
+    color: #e8e8e8;
+}
+
+/* Игровой интерфейс */
+.game-ui-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.player-info {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.player-name {
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #ffd700;
+}
+
+.player-hp, .player-attack, .player-score {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.player-hp { color: #ff6b6b; }
+.player-attack { color: #4ecdc4; }
+.player-score { color: #ffd93d; }
+
+.game-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Основной игровой контент */
+.game-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+}
+
+/* Информация о локации */
+.location-section {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.location-section h3 {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.5rem;
+    color: #ffd700;
+    margin-bottom: 1rem;
+}
+
+.location-items, .location-monster, .location-exits {
+    margin-top: 1rem;
+    padding: 0.8rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+.location-items::before { content: "🎒 "; }
+.location-monster::before { content: "👹 "; }
+.location-exits::before { content: "🚪 "; }
+
+/* Инвентарь */
+.inventory-section {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 1rem;
+}
+
+.inventory-section h4 {
+    color: #ffd700;
+    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
+}
+
+.inventory-items {
+    color: #e8e8e8;
+    font-size: 0.9rem;
+    min-height: 60px;
+}
+
+/* Команды */
+.command-section {
+    grid-column: 1 / -1;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.command-box {
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+.command-box input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px 0 0 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 1rem;
+    outline: none;
+}
+
+.command-box input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.command-box input:focus {
+    border-color: #ffd700;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.command-box button {
+    border-radius: 0 8px 8px 0;
+    border-left: none;
+}
+
+/* Быстрые команды */
+.quick-commands {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.quick-btn {
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    color: white;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.quick-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+/* Вывод игры */
+.output-section {
+    grid-column: 1 / -1;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin-top: 1rem;
+}
+
+.output-section h4 {
+    color: #ffd700;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.game-output {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 1rem;
+    border-radius: 8px;
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    max-height: 300px;
+    overflow-y: auto;
+    color: #00ff88;
+    border: 1px solid rgba(0, 255, 136, 0.3);
+}
+
+.game-output::-webkit-scrollbar {
+    width: 8px;
+}
+
+.game-output::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.game-output::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+}
+
+/* Быстрые действия */
+.quick-actions {
+    grid-column: 1 / -1;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin-top: 1rem;
+}
+
+.quick-actions h4 {
+    color: #ffd700;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.movement-buttons, .item-buttons, .monster-buttons {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.movement-btn, .item-btn, .monster-btn {
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    color: white;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.movement-btn:hover, .item-btn:hover, .monster-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-1px);
+}
+
+/* Анимации для боя */
+@keyframes attack-animation {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+@keyframes damage-flash {
+    0% { background-color: rgba(255, 107, 107, 0.3); }
+    100% { background-color: transparent; }
+}
+
+.damage-animation {
+    animation: damage-flash 0.5s ease-in-out;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .game-title {
+        font-size: 2.5rem;
+    }
+    
+    .game-content {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .game-ui-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .player-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .commands-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .menu-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .game-title {
+        font-size: 2rem;
+    }
+    
+    .game-subtitle {
+        font-size: 1rem;
+    }
+    
+    .commands-section, .about-section {
+        padding: 1rem;
+    }
+    
+    .command-category {
+        padding: 1rem;
+    }
+    
+    .quick-commands {
+        flex-direction: column;
+    }
+    
+    .quick-btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* Специальные эффекты */
+.glow {
+    animation: glow 1s ease-in-out infinite alternate;
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Визуализация персонажа */
+.character-display {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 215, 0, 0.5);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.character-art {
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: 0.8rem;
+    line-height: 1.2;
+    color: #ffd700;
+    white-space: pre;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.character-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.stat-bar {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.5rem;
+    text-align: center;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: #b0c4de;
+    margin-bottom: 0.3rem;
+}
+
+.stat-value {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.stat-hp .stat-value { color: #ff6b6b; }
+.stat-attack .stat-value { color: #4ecdc4; }
+.stat-level .stat-value { color: #ffd93d; }
+.stat-xp .stat-value { color: #9d4edd; }
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4ecdc4, #44a08d);
+    transition: width 0.3s ease;
+    border-radius: 4px;
+}
+
+.xp-progress-fill {
+    background: linear-gradient(90deg, #9d4edd, #c77dff);
+}
+
+/* Детальный инвентарь */
+.detailed-inventory {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.inventory-slot {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    padding: 0.8rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.inventory-slot:hover {
+    border-color: #ffd700;
+    background: rgba(255, 215, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.inventory-slot.empty {
+    border-style: dashed;
+    opacity: 0.5;
+}
+
+.item-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.item-name {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: white;
+    line-height: 1.2;
+}
+
+.item-type {
+    font-size: 0.7rem;
+    opacity: 0.8;
+    margin-top: 0.3rem;
+}
+
+.item-weapon { color: #ff6b35; }
+.item-potion { color: #4ecdc4; }
+.item-key { color: #ffd93d; }
+
+/* Предметы в локации */
+.location-items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.location-item {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.location-item:hover {
+    border-color: #4ecdc4;
+    background: rgba(78, 205, 196, 0.1);
+    transform: scale(1.05);
+}
+
+.location-item.inventory-full {
+    border-color: #ff6b6b;
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.item-effect {
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    color: #b0c4de;
+}
+
+/* Монстры в локации */
+.monster-display {
+    background: rgba(255, 107, 107, 0.1);
+    border: 2px solid rgba(255, 107, 107, 0.3);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 1rem;
+}
+
+.monster-art {
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: 0.8rem;
+    line-height: 1.2;
+    color: #ff6b6b;
+    white-space: pre;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 107, 107, 0.3);
+    margin-bottom: 1rem;
+}
+
+.monster-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 1rem;
+}
+
+.monster-stat {
+    text-align: center;
+    padding: 0.5rem;
+    background: rgba(255, 107, 107, 0.1);
+    border-radius: 6px;
+}
+
+.monster-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #ff6b6b;
+    margin-bottom: 0.5rem;
+}
+
+.monster-level {
+    font-size: 0.9rem;
+    color: #ffd93d;
+}
+
+.monster-hp {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ff4444;
+}
+
+.monster-danger {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: linear-gradient(45deg, #ff6b6b, #ff4757);
+    color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+
+/* Графическое представление локаций */
+.location-visual {
+    background: linear-gradient(135deg, rgba(30, 60, 114, 0.8), rgba(42, 82, 152, 0.8));
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.location-visual::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+    opacity: 0.3;
+    z-index: 0;
+}
+
+.location-visual > * {
+    position: relative;
+    z-index: 1;
+}
+
+.location-art {
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: 0.7rem;
+    line-height: 1.3;
+    color: #ffffff;
+    white-space: pre;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.location-transition {
+    animation: locationChange 0.5s ease-in-out;
+}
+
+@keyframes locationChange {
+    0% { opacity: 0.5; transform: scale(0.95); }
+    50% { opacity: 0.8; transform: scale(1.05); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* Система уровней */
+.level-up-notification {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(45deg, #ffd700, #ffed4a);
+    color: #1e3c72;
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.5rem;
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
+    z-index: 1000;
+    animation: levelUp 1.5s ease-in-out;
+}
+
+@keyframes levelUp {
+    0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+    50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+.level-effects {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: rgba(255, 215, 0, 0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.level-effect {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+}
+
+.level-effect .old-value {
+    color: #999;
+    text-decoration: line-through;
+}
+
+.level-effect .new-value {
+    color: #ffd700;
+    font-weight: 600;
+}
+
+/* Боевая система */
+.battle-ui {
+    background: rgba(255, 107, 107, 0.1);
+    border: 2px solid rgba(255, 107, 107, 0.3);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+}
+
+.battle-status {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 2rem;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.combatant {
+    text-align: center;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.combatant.player {
+    background: rgba(78, 205, 196, 0.1);
+    border: 1px solid rgba(78, 205, 196, 0.3);
+}
+
+.combatant.monster {
+    background: rgba(255, 107, 107, 0.1);
+    border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.vs-divider {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #ffd700;
+}
+
+.battle-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.damage-animation {
+    animation: damageFlash 0.6s ease-in-out;
+    position: relative;
+}
+
+@keyframes damageFlash {
+    0%, 100% { background-color: transparent; }
+    25% { background-color: rgba(255, 107, 107, 0.4); }
+    50% { background-color: rgba(255, 107, 107, 0.2); }
+    75% { background-color: rgba(255, 107, 107, 0.6); }
+}
+
+.heal-animation {
+    animation: healFlash 0.6s ease-in-out;
+}
+
+@keyframes healFlash {
+    0%, 100% { background-color: transparent; }
+    25% { background-color: rgba(78, 205, 196, 0.4); }
+    50% { background-color: rgba(78, 205, 196, 0.2); }
+    75% { background-color: rgba(78, 205, 196, 0.6); }
+}
+
+/* Темы предметов */
+.item-weapon { color: #ff6b35; }
+.item-potion { color: #4ecdc4; }
+.item-key { color: #ffd93d; }
+
+/* Дополнительные стили для элементов игры */
+.location-name {
+    font-weight: 700;
+    color: #ffd700;
+}
+
+.location-description {
+    color: #e8e8e8;
+    margin-bottom: 0.8rem;
+    line-height: 1.5;
+}
+
+.game-message {
+    margin-bottom: 0.5rem;
+    padding: 0.3rem 0;
+    border-left: 3px solid #ffd700;
+    padding-left: 0.8rem;
+}
+
+.game-error {
+    color: #ff6b6b;
+    background: rgba(255, 107, 107, 0.1);
+    padding: 0.5rem;
+    border-radius: 4px;
+    margin: 0.5rem 0;
+}
+
+.game-success {
+    color: #4ecdc4;
+    background: rgba(78, 205, 196, 0.1);
+    padding: 0.5rem;
+    border-radius: 4px;
+    margin: 0.5rem 0;
+}

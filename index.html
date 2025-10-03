@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dungeon Mini - RPG Игра</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Главное меню -->
+        <div id="main-menu" class="screen active">
+            <div class="container">
+                <header class="game-header">
+                    <h1 class="game-title">🏰 DUNGEON MINI 🏰</h1>
+                    <p class="game-subtitle">Текстовая RPG Игра</p>
+                </header>
+
+                <div class="menu-buttons">
+                    <button class="btn btn-primary" onclick="showCommands()">
+                        📋 Список команд
+                    </button>
+                    <button class="btn btn-secondary" onclick="startGame()">
+                        🎮 Начать игру
+                    </button>
+                    <button class="btn btn-info" onclick="showAbout()">
+                        ℹ️ О игре
+                    </button>
+                </div>
+
+                <!-- Список команд -->
+                <div id="commands-section" class="commands-section hidden">
+                    <h2>📋 Команды игры</h2>
+                    <div class="commands-grid">
+                        
+                        <!-- Основные команды -->
+                        <div class="command-category">
+                            <h3>🎮 Основные команды</h3>
+                            <div class="command-item">
+                                <span class="command">help</span>
+                                <span class="description">Показать список доступных команд</span>
+                            </div>
+                            <div class="command-item">
+                                <span class="command">look</span>
+                                <span class="description">Осмотреться по сторонам в текущей комнате</span>
+                            </div>
+                            <div class="command-item">
+                                <span class="command">move &lt;направление&gt;</span>
+                                <span class="description">Переместиться (north/south/east/west)</span>
+                            </div>
+                        </div>
+
+                        <!-- Действия с предметами -->
+                        <div class="command-category">
+                            <h3>🎒 Инвентарь и предметы</h3>
+                            <div class="command-item">
+                                <span class="command">take &lt;предмет&gt;</span>
+                                <span class="description">Взять предмет в комнате</span>
+                            </div>
+                            <div class="command-item">
+                                <span class="command">inventory</span>
+                                <span class="description">Показать содержимое инвентаря</span>
+                            </div>
+                            <div class="command-item">
+                                <span class="command">use &lt;предмет&gt;</span>
+                                <span class="description">Использовать предмет из инвентаря</span>
+                            </div>
+                        </div>
+
+                        <!-- Боевая система -->
+                        <div class="command-category">
+                            <h3>⚔️ Боевая система</h3>
+                            <div class="command-item">
+                                <span class="command">fight</span>
+                                <span class="description">Вступить в бой с монстром в комнате</span>
+                            </div>
+                            <div class="command-item">
+                                <span class="command">examine</span>
+                                <span class="description">Осмотреть особые объекты (например, запертые двери)</span>
+                            </div>
+                        </div>
+
+                        <!-- Информация о персонаже -->
+                        <div class="command-category">
+                            <h3>👤 Информация о персонаже</h3>
+                            <div class="command-item">
+                                <span class="command">whoami</span>
+                                <span class="description">Показать информацию о текущем персонаже</span>
+                            </div>
+                            <div class="command-item">
+                                <span class="command">name</span>
+                                <span class="description">Показать текущее имя или изменить его</span>
+                            </div>
+                            <div class="command-item">
+                                <span class="command">mystats</span>
+                                <span class="description">Показать статистику игрока за все время</span>
+                            </div>
+                        </div>
+
+                        <!-- Сохранения и рейтинги -->
+                        <div class="command-category">
+                            <h3>💾 Сохранения и рейтинги</h3>
+                            <div class="command-item">
+                                <span class="command">save [имя]</span>
+                                <span class="description">Сохранить игру</span>
+                            </div>
+                            <div class="command-item">
+                                <span class="command">load [имя]</span>
+                                <span class="description">Загрузить сохраненную игру</span>
+                            </div>
+                            <div class="command-item">
+                                <span class="command">saves</span>
+                                <span class="description">Показать список доступных сохранений</span>
+                            </div>
+                            <div class="command-item">
+                                <span class="command">scores</span>
+                                <span class="description">Показать таблицу лидеров</span>
+                            </div>
+                        </div>
+
+                        <!-- Системные команды -->
+                        <div class="command-category">
+                            <h3>⚙️ Системные команды</h3>
+                            <div class="command-item">
+                                <span class="command">about</span>
+                                <span class="description">Показать информацию об игре</span>
+                            </div>
+                            <div class="command-item">
+                                <span class="command">gc-stats</span>
+                                <span class="description">Показать статистику памяти JVM</span>
+                            </div>
+                            <div class="command-item">
+                                <span class="command">exit</span>
+                                <span class="description">Выйти из игры</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="commands-footer">
+                        <button class="btn btn-back" onclick="hideCommands()">
+                            ← Назад в меню
+                        </button>
+                        <button class="btn btn-primary" onclick="startGame()">
+                            🎮 Играть сейчас!
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Информация об игре -->
+                <div id="about-section" class="about-section hidden">
+                    <h2>ℹ️ О игре</h2>
+                    <div class="about-content">
+                        <h3>📖 Описание:</h3>
+                        <p>Dungeon Mini — это увлекательная текстовая RPG игра, где вы исследуете волшебный мир, сражаетесь с монстрами, собираете предметы и находите выход из подземелья!</p>
+                        
+                        <h3>🎯 Цель игры:</h3>
+                        <ul>
+                            <li>Исследуйте различные локации</li>
+                            <li>Собирайте полезные предметы (оружие, зелья, ключи)</li>
+                            <li>Сражайтесь с монстрами</li>
+                            <li>Найдите выход из подземелья</li>
+                            <li>Получите наивысший счет!</li>
+                        </ul>
+
+                        <h3>🗺️ Локации:</h3>
+                        <ul>
+                            <li>🏛️ <strong>Площадь</strong> — начальная локация</li>
+                            <li>🌲 <strong>Лес</strong> — место встреч с монстрами</li>
+                            <li>🕳️ <strong>Пещера</strong> — опасная область с сокровищами</li>
+                            <li>🏆 <strong>Сокровищница</strong> — финальная цель!</li>
+                        </ul>
+
+                        <h3>⚙️ Техническая информация:</h3>
+                        <ul>
+                            <li><strong>Платформа:</strong> Java Console Application</li>
+                            <li><strong>Архитектура:</strong> Модель-Команда-Состояние</li>
+                            <li><strong>Сохранения:</strong> Try-with-resources + NIO</li>
+                            <li><strong>Совместимость:</strong> Java 17+</li>
+                        </ul>
+                    </div>
+
+                    <div class="commands-footer">
+                        <button class="btn btn-back" onclick="hideAbout()">
+                            ← Назад в меню
+                        </button>
+                        <button class="btn btn-primary" onclick="startGame()">
+                            🎮 Начать игру!
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Игровой интерфейс -->
+                <div id="game-section" class="game-section hidden">
+                    <header class="game-ui-header">
+                        <div class="player-info">
+                            <span id="player-name" class="player-name">Герой</span>
+                            <span id="player-hp" class="player-hp">❤️ HP: 20</span>
+                            <span id="player-attack" class="player-attack">⚔️ Атака: 5</span>
+                            <span id="player-score" class="player-score">⭐ Счет: 0</span>
+                        </div>
+                        <div class="game-controls">
+                            <button class="btn btn-small" onclick="backToMenu()">🏠 Меню</button>
+                            <button class="btn btn-small" onclick="showGameCommands()">📋 Помощь</button>
+                        </div>
+                    </header>
+
+                    <div class="game-content">
+                        <!-- Визуализация персонажа -->
+                        <div class="character-display">
+                            <h3 id="character-class">🗡️ Воин 1 уровня</h3>
+                            <div id="character-art" class="character-art"></div>
+                            <div class="character-stats">
+                                <div class="stat-bar stat-hp">
+                                    <div class="stat-label">❤️ Здоровье</div>
+                                    <div class="stat-value" id="detailed-hp">20/20</div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="hp-bar" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                                <div class="stat-bar stat-attack">
+                                    <div class="stat-label">⚔️ Атака</div>
+                                    <div class="stat-value" id="detailed-attack">5</div>
+                                </div>
+                                <div class="stat-bar stat-level">
+                                    <div class="stat-label">⭐ Уровень</div>
+                                    <div class="stat-value" id="detailed-level">1</div>
+                                </div>
+                                <div class="stat-bar stat-xp">
+                                    <div class="stat-label">✨ Опыт</div>
+                                    <div class="stat-value" id="detailed-xp">0/100</div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill xp-progress-fill" id="xp-bar" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Графическое представление локации -->
+                        <div id="location-visual" class="location-visual">
+                            <h3 id="location-name">Площадь</h3>
+                            <div id="location-art" class="location-art"></div>
+                            <p id="location-description">Каменная площадь с фонтаном.</p>
+                            
+                            <!-- Предметы в локации -->
+                            <div id="location-items-grid" class="location-items-grid"></div>
+                            
+                            <!-- Монстры в локации -->
+                            <div id="monster-display" class="monster-display hidden"></div>
+                            
+                            <!-- Выходы из локации -->
+                            <div id="location-exits" class="location-exits"></div>
+                        </div>
+
+                        <!-- Детальный инвентарь -->
+                        <div class="detailed-inventory">
+                            <h4>🎒 Инвентарь (макс. 8 слотов):</h4>
+                            <div id="detailed-inventory-grid" class="inventory-grid"></div>
+                            <div id="inventory-items-old" class="inventory-items hidden">Пуст</div>
+                        </div>
+
+                        <div id="command-section" class="command-section">
+                            <div class="command-box">
+                                <input type="text" id="command-input" placeholder="Введите команду..." autocomplete="off">
+                                <button id="execute-btn" class="btn btn-execute">▶️</button>
+                            </div>
+                            <div class="quick-commands">
+                                <button class="quick-btn" onclick="executeQuickCommand('look')">👁️ Осмотреться</button>
+                                <button class="quick-btn" onclick="executeQuickCommand('whoami')">👤 Кто я</button>
+                                <button class="quick-btn" onclick="executeQuickCommand('inventory')">🎒 Инвентарь</button>
+                            </div>
+                        </div>
+
+                        <div id="output-section" class="output-section">
+                            <h4>📜 Журнал событий:</h4>
+                            <div id="game-output" class="game-output"></div>
+                        </div>
+
+                        <!-- Быстрые действия -->
+                        <div id="quick-actions" class="quick-actions hidden">
+                            <h4>🚀 Быстрые действия:</h4>
+                            <div id="movement-buttons" class="movement-buttons"></div>
+                            <div id="item-buttons" class="item-buttons"></div>
+                            <div id="monster-buttons" class="monster-buttons"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dungeon Mini - Отладка</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #1e3c72;
+            color: white;
+            margin: 0;
+            padding: 20px;
+        }
+        .debug-panel {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        button {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #ff8e57;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success { background: rgba(78, 205, 196, 0.3); }
+        .error { background: rgba(255, 107, 107, 0.3); }
+        .warning { background: rgba(255, 215, 0, 0.3); }
+        
+        /* Копируем основные стили игры */
+        .screen { display: block; }
+        .screen.hidden { display: none; }
+        #main-menu { display: block; }
+        #game-section { display: none; }
+    </style>
+</head>
+<body>
+    <h1>🐛 Dungeon Mini - Отладочная панель</h1>
+    
+    <div class="debug-panel">
+        <h2>Диагностика проблем</h2>
+        
+        <button onclick="checkFiles()">1. Проверить файлы</button>
+        <button onclick="checkJavaScript()">2. Проверить JavaScript</button>
+        <button onclick="checkCSS()">3. Проверить CSS</button>
+        <button onclick="testGameInit()">4. Тест инициализации игры</button>
+        <button onclick="startSimpleGame()">5. Запустить простою игру</button>
+        
+        <div id="status-output"></div>
+    </div>
+
+    <!-- Мини-версия игры для тестирования -->
+    <div id="game-section" class="screen hidden">
+        <div class="debug-panel">
+            <h2>Простая игра</h2>
+            <p><strong>Персонаж:</strong> <span id="player-info">Герой</span></p>
+            <p><strong>Локация:</strong> <span id="location-info">Площадь</span></p>
+            
+            <input type="text" id="command-input" placeholder="Введите команду..." style="width: 300px; padding: 10px;">
+            <button onclick="executeSimpleCommand()">Выполнить</button>
+            
+            <div id="game-log" style="background: rgba(0,0,0,0.5); padding: 10px; margin-top: 10px; height: 200px; overflow-y: auto;"></div>
+        </div>
+    </div>
+
+    <script>
+        function log(message, type = 'success') {
+            const output = document.getElementById('status-output');
+            const div = document.createElement('div');
+            div.className = `status ${type}`;
+            div.innerHTML = new Date().toLocaleTimeString() + ': ' + message;
+            output.appendChild(div);
+            output.scrollTop = output.scrollHeight;
+        }
+
+        function checkFiles() {
+            log('Проверяем доступность файлов...');
+            
+            // Проверяем стили
+            const cssLink = document.querySelector('link[href="styles.css"]');
+            if (cssLink) {
+                log('✅ CSS файл подключен');
+            } else {
+                log('❌ CSS файл не подключен', 'error');
+            }
+            
+            // Проверяем скрипт
+            const scripts = document.querySelectorAll('script[src]');
+            log(`Найдено ${scripts.length} внешних скриптов`);
+            
+            log('✅ Проверка файлов завершена');
+        }
+
+        function checkJavaScript() {
+            log('Проверяем JavaScript...');
+            
+            try {
+                // Проверяем функции игры
+                if (typeof showCommands === 'function') {
+                    log('✅ showCommands найдена');
+                } else {
+                    log('❌ showCommands не найдена', 'error');
+                }
+                
+                if (typeof startGame === 'function') {
+                    log('✅ startGame найдена');
+                } else {
+                    log('❌ startGame не найдена', 'error');
+                }
+                
+                if (typeof DungeonGame === 'function') {
+                    log('✅ DungeonGame найдена');
+                } else {
+                    log('❌ DungeonGame не найдена', 'error');
+                }
+                
+            } catch (error) {
+                log('❌ Ошибка JavaScript: ' + error.message, 'error');
+            }
+            
+            log('✅ Проверка JavaScript завершена');
+        }
+
+        function checkCSS() {
+            log('Проверяем CSS...');
+            
+            const bodyStyles = window.getComputedStyle(document.body);
+            const bgColor = bodyStyles.backgroundColor;
+            
+            if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)') {
+                log('✅ CSS загружен (фон: ' + bgColor + ')');
+            } else {
+                log('❌ CSS не загружен или проблемы со стилями', 'error');
+            }
+            
+            // Проверяем загрузку шрифтов
+            const fonts = ['Orbitron', 'Roboto'];
+            fonts.forEach(font => {
+                if (document.fonts && document.fonts.check) {
+                    if (document.fonts.check('16px ' + font)) {
+                        log(`✅ Шрифт ${font} загружен`);
+                    } else {
+                        log(`⚠️ Шрифту ${font} не удалось загрузиться`, 'warning');
+                    }
+                }
+            });
+            
+            log('✅ Проверка CSS завершена');
+        }
+
+        function testGameInit() {
+            log('Тестируем инициализацию игры...');
+            
+            try {
+                if (typeof window.game !== 'undefined') {
+                    log('❌ Игра уже инициализирована! Перезагрузите страницу.', 'warning');
+                    return;
+                }
+                
+                // Пытаемся создать экземпляр игры
+                if (typeof DungeonGame === 'function') {
+                    window.game = new DungeonGame();
+                    log('✅ Игра успешно создана!');
+                    
+                    // Проверяем основные методы
+                    if (typeof window.game.updateUI === 'function') {
+                        log('✅ updateUI метод доступен');
+                    }
+                    
+                    if (typeof window.game.executeCommand === 'function') {
+                        log('✅ executeCommand метод доступен');
+                    }
+                    
+                } else {
+                    log('❌ DungeonGame класс не найден', 'error');
+                }
+                
+            } catch (error) {
+                log('❌ Ошибка инициализации: ' + error.message, 'error');
+            }
+            
+            log('✅ Тест инициализации завершен');
+        }
+
+        let simpleGame = {
+            player: { name: 'Тестовый герой', hp: 20, level: 1 },
+            location: 'Площадь',
+            log: []
+        };
+
+        function startSimpleGame() {
+            log('Запускаем простую игровую версию...');
+            
+            document.getElementById('main-menu').classList.add('hidden');
+            document.getElementById('game-section').classList.remove('hidden');
+            
+            updateSimpleGameUI();
+            log('🎮 Простая игра запущена! Попробуйте команды: look, move north, test');
+            log('Команды: look, move north, help, test', 'warning');
+        }
+
+        function updateSimpleGameUI() {
+            document.getElementById('player-info').textContent = 
+                `${simpleGame.player.name} (HP: ${simpleGame.player.hp}, Level: ${simpleGame.player.level})`;
+            document.getElementById('location-info').textContent = simpleGame.location;
+            
+            const logDiv = document.getElementById('game-log');
+            logDiv.innerHTML = simpleGame.log.map(msg => 
+                `<div>${new Date().toLocaleTimeString()}: ${msg}</div>`
+            ).join('');
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function executeSimpleCommand() {
+            const input = document.getElementById('command-input');
+            const command = input.value.trim();
+            
+            if (!command) return;
+            
+            input.value = '';
+            addSimpleGameLog(`> ${command}`);
+            
+            switch (command.toLowerCase()) {
+                case 'look':
+                    addSimpleGameLog('👁️ Осматриваетесь: Площадь с фонтаном');
+                    break;
+                case 'north':
+                case 'move north':
+                    simpleGame.location = 'Лес';
+                    addSimpleGameLog('➡️ Переходите в лес');
+                    updateSimpleGameUI();
+                    break;
+                case 'help':
+                    addSimpleGameLog('📋 Доступные команды: look, north, help, test');
+                    break;
+                case 'test':
+                    addSimpleGameLog('🧪 Тестовая команда выполнена!');
+                    break;
+                default:
+                    addSimpleGameLog(`❓ Неизвестная команда: ${command}`);
+            }
+        }
+
+        function addSimpleGameLog(message) {
+            simpleGame.log.push(message);
+            if (simpleGame.log.length > 20) {
+                simpleGame.log.shift(); // Ограничиваем размер лога
+            }
+            updateSimpleGameUI();
+        }
+
+        // Автоматические проверки при загрузке
+        window.addEventListener('load', function() {
+            log('🌐 Страница загружена');
+            setTimeout(checkFiles, 100);
+            setTimeout(checkCSS, 200);
+            setTimeout(checkJavaScript, 500);
+        });
+
+        // Обработка нажатия Enter в поле ввода
+        document.getElementById('command-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                executeSimpleCommand();
+            }
+        });
+    </script>
+</body>
+</html>

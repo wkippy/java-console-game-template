@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dungeon Mini - Простая версия</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .game-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .game-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .game-subtitle {
+            font-size: 1.2rem;
+            color: #b0c4de;
+        }
+        
+        .game-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .character-display {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .character-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .stat-bar {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #b0c4de;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+        
+        .stat-hp { color: #ff6b6b; }
+        .stat-attack { color: #4ecdc4; }
+        .stat-level { color: #ffd700; }
+        .stat-xp { color: #9d4edd; }
+        
+        .location-visual {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .location-art {
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.8rem;
+            line-height: 1.3;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            white-space: pre;
+        }
+        
+        .inventory-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .inventory-slot {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .inventory-slot:hover {
+            border-color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .item-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .item-name {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: white;
+            line-height: 1.2;
+        }
+        
+        .command-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+        }
+        
+        .command-box {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+        
+        .command-box input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px 0 0 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            outline: none;
+        }
+        
+        .command-box input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .command-box button {
+            padding: 12px 20px;
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .output-section {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+        }
+        
+        .game-output {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            max-height: 300px;
+            overflow-y: auto;
+            color: #00ff88;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 8px;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #ff6b35 100%, #ff8e53);
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        
+        .hidden { display: none !important; }
+        
+        @media (max-width: 768px) {
+            .game-title { font-size: 2rem; }
+            .character-stats { grid-template-columns: 1fr; }
+            .container { padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Главное меню -->
+        <div id="main-menu">
+            <div class="game-header">
+                <h1 class="game-title">🏰 DUNGEON MINI 🏰</h1>
+                <p class="game-subtitle">Простая версия с визуализацией</p>
+            </div>
+            
+            <div style="text-align: center;">
+                <button class="btn btn-primary" onclick="startSimpleGame()">🎮 Начать игру</button>
+                <button class="btn btn-primary" onclick="showCommands()">📋 Список команд</button>
+            </div>
+            
+            <div id="commands-help" class="hidden" style="background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 15px的; margin-top: 2rem;">
+                <h2>📋 Команды игры</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                    <div><strong>look</strong> - Осмотреться</div>
+                    <div><strong>move north/south/east/west</strong> - Движение</div>
+                    <div><strong>take &lt;предмет&gt;</strong> - Взять предмет</div>
+                    <div><strong>use &lt;предмет&gt;</strong> - Использовать</div>
+                    <div><strong>inventory</strong> - Показать инвентарь</div>
+                    <div><strong>whoami</strong> - Информация о персонаже</div>
+                    <div><strong>fight</strong> - Сразиться с монстром</div>
+                    <div><strong>help</strong> - Эта справка</div>
+                </div>
+                <button class="btn btn-primary" onclick="hideCommands()" style="margin-top: 1rem;">← Закрыть справку</button>
+            </div>
+        </div>
+
+        <!-- Игровой интерфейс -->
+        <div id="game-section" class="hidden">
+            <!-- Персонаж -->
+            <div class="character-display">
+                <h3 id="character-class">🗡️ Воин 1 уровня</h3>
+                <div class="character-stats">
+                    <div class="stat-bar stat-hp">
+                        <div class="stat-label">❤️ Здоровье</div>
+                        <div class="stat-value" id="detailed-hp">20/20</div>
+                    </div>
+                    <div class="stat-bar stat-attack">
+                        <div class="stat-label">⚔️ Атака</div>
+                        <div class="stat-value" id="detailed-attack">5</div>
+                    </div>
+                    <div class="stat-bar stat-level">
+                        <div class="stat-label">⭐ Уровень</div>
+                        <div class="stat-value" id="detailed-level">1</div>
+                    </div>
+                    <div class="stat-bar stat-xp">
+                        <div class="stat-label">✨ Опыт</div>
+                        <div class="stat-value" id="detailed-xp">0/100</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Локация -->
+            <div id="location-visual" class="location-visual">
+                <h3 id="location-name">Площадь</h3>
+                <div id="location-art" class="location-art">
+🏛️ Площадь
+/██\
+/████\
+🌊💧🌊
+════════
+🚪    Н    🚪
+                </div>
+                <p id="location-description">Каменная площадь с фонтаном. Здесь начинается ваше приключение.</p>
+                
+                <div id="location-items" style="margin: 1rem 0; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px;"></div>
+                <div id="location-monster" style="margin: 1rem 0; padding: 1rem; background: rgba(255,107,107,0.1); border-radius: 8px;"></div>
+            </div>
+
+            <!-- Инвентарь -->
+            <div class="inventory-section">
+                <h4>🎒 Инвентарь:</h4>
+                <div id="detailed-inventory-grid" class="inventory-grid"></div>
+            </div>
+
+            <!-- Командная строка -->
+            <div class="command-section">
+                <h4>🎮 Командная строка:</h4>
+                <div class="command-box">
+                    <input type="text" id="command-input" placeholder="Введите команду: hello МоеИмя или look..." autocomplete="off">
+                    <button onclick="executeCommand()">▶️ Выполнить</button>
+                </div>
+            </div>
+
+            <!-- Журнал -->
+            <div class="output-section">
+                <h4>📜 Журнал событий:</h4>
+                <div id="game-output" class="game-output">
+=== ПОПРОСТЫ ЦВЕНТРО DUNGEON MINI ===
+Добро пожаловать в игру!
+
+Для начала игры введите:
+hello ИмяВашегоПерсонажа
+
+Введите 'help' для справки
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 2rem;">
+                <button class="btn btn-primary" onclick="backToMenu()">🏠 Главное меню</button>
+                <button class="btn btn-primary" onclick="restartGame()">🔄 Новая игра</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Простая игровая логика
+        class SimpleDungeonGame {
+            constructor() {
+                this.gameState = {
+                    player: {
+                        name: 'Герой',
+                        hp: 20,
+                        maxHp: 20,
+                        attack: 5,
+                        level: 1,
+                        xp: 0,
+                        xpToNext: 100,
+                        class: 'Воин',
+                        inventory: []
+                    },
+                    currentLocation: 'Площадь',
+                    score: 0,
+                    world: {
+                        'Площадь': {
+                            name: 'Площадь',
+                            description: 'Каменная площадь с фонтаном. Здесь начинается ваше приключение.',
+                            art: `🏛️ Площадь
+/██\\
+/████\\
+🌊💧🌊
+════════
+🚪    Н    🚪`,
+                            exits: { north: 'Лес' },
+                            items: [],
+                            monster: null
+                        },
+                        'Лес': {
+                            name: 'Лес',
+                            description: 'Загадочный лес с шелестом листвы.',
+                            art: `🌳🌲🌳
+🌿🌿🦅🐿️🌿
+🔮🔮🍄🔮🔮
+═════════════`,
+                            exits: { south: 'Площадь', east: 'Пещера' },
+                            items: [
+                                { type: 'potion', name: 'Малое зелье', heal: 5 },
+                                { type: 'key', name: 'Золотой ключ', canOpen: ['Пещера->Сокровищница'] }
+                            ],
+                            monster: { name: 'Волк', level: 1, hp: 8 }
+                        },
+                        'Пещера': {
+                            name: 'Пещера',
+                            description: 'Темная и сырая пещера',
+                            art: `🔦💀👹💀🔦
+▓▓▓💎▓▓▓
+▓▓░░░▓▓▓
+═══════════`,
+                            exits: { west: 'Лес' },
+                            items: [
+                                { type: 'weapon', name: 'Ржавый меч', attackBonus: 2 }
+                            ],
+                            monster: { name: 'Гоблину', level: 2, hp: 12 }
+                        }
+                    }
+                };
+            }
+
+            updateUI() {
+                const player = this.gameState.player;
+                const location = this.gameState.world[this.gameState.currentLocation];
+
+                // Обновляем персонажа
+                document.getElementById('character-class').textContent = `🗡️ ${player.class} ${player.level} уровня`;
+                document.getElementById('detailed-hp').textContent = `${player.hp}/${player.maxHp}`;
+                document.getElementById('detailed-attack').textContent = player.attack;
+                document.getElementById('detailed-level').textContent = player.level;
+                document.getElementById('detailed-xp').textContent = `${player.xp}/${player.xpToNext}`;
+
+                // Обновляем локаци
+                document.getElementById('location-name').textContent = location.name;
+                document.getElementById('location-art').textContent = location.art;
+                document.getElementById('location-description').textContent = location.description;
+
+                // Предметы в локации
+                const itemsContainer = document.getElementById('location-items');
+                if (location.items.length > 0) {
+                    itemsContainer.innerHTML = '🎒 ' + location.items.map(item => item.name).join(', ');
+                } else {
+                    itemsContainer.innerHTML = '<span style="color: #999;">Предметов нет</span>';
+                }
+
+                // Монстры
+                const monsterContainer = document.getElementById('location-monster');
+                if (location.monster) {
+                    monsterContainer.innerHTML = `👹 Монстр: ${location.monster.name} (Уровень ${location.monster.level}, HP: ${location.monster.hp})`;
+                } else {
+                    monsterContainer.innerHTML = '<span style="color: #999;">Монстров нет</span>';
+                }
+
+                // Обновляем инвентарь
+                this.updateInventory();
+            }
+
+            updateInventory() {
+                const container = document.getElementById('detailed-inventory-grid');
+                const inventory = this.gameState.player.inventory;
+
+                container.innerHTML = '';
+                
+                for (let i = 0; i < 8; i++) {
+                    const slot = document.createElement('div');
+                    slot.className = 'inventory-slot';
+                    
+                    if (i < inventory.length) {
+                        const item = inventory[i];
+                        const iconMap = { weapon: '⚔️', potion: '🧪', key: '🔑' };
+                        
+                        slot.innerHTML = `
+                            <div class="item-icon">${iconMap[item.type] || '📦'}</div>
+                            <div class="item-name">${item.name}</div>
+                        `;
+                        
+                        slot.onclick = () => this.useItem(item.name);
+                    } else {
+                        slot.innerHTML = '<div style="color: #666;">Пусто</div>';
+                    }
+                    
+                    container.appendChild(slot);
+                }
+            }
+
+            executeCommand(input) {
+                const parts = input.trim().split(' ');
+                const command = parts[0].toLowerCase();
+                const args = parts.slice(1);
+
+                if (command === 'hello' && args.length > 0) {
+                    this.gameState.player.name = args.join(' ');
+                    this.addOutput(`✅ Добро пожаловать, ${this.gameState.player.name}!`);
+                    this.addOutput('Теперь вы можете исследовать мир. Попробуйте: look, move north');
+                    
+                } else if (command === 'look') {
+                    const location = this.gameState.world[this.gameState.currentLocation];
+                    this.addOutput(`📍 ${location.name}: ${location.description}`);
+                    if (location.items.length > 0) {
+                        this.addOutput(`🎒 Предметы: ${location.items.map(item => item.name).join(', ')}`);
+                    }
+                    if (location.monster) {
+                        this.addOutput(`👹 Монстр: ${location.monster.name} (Уровень ${location.monster.level})`);
+                    }
+                    
+                } else if (command === 'move') {
+                    if (args.length === 0) {
+                        this.addOutput('❌ Укажите направление: north, south, east, west');
+                        return;
+                    }
+                    
+                    const direction = args[0];
+                    const location = this.gameState.world[this.gameState.currentLocation];
+                    
+                    if (!location.exits[direction]) {
+                        this.addOutput(`❌ Нет выхода на ${direction}`);
+                        return;
+                    }
+                    
+                    this.gameState.currentLocation = location.exits[direction];
+                    this.addOutput(`➡️ Переход в: ${this.gameState.currentLocation}`);
+                    
+                } else if (command === 'take') {
+                    this.takeItem(args.join(' '));
+                    
+                } else if (command === 'use') {
+                    this.useItem(args.join(' '));
+                    
+                } else if (command === 'inventory') {
+                    this.showInventory();
+                    
+                } else if (command === 'whoami') {
+                    const player = this.gameState.player;
+                    this.addOutput(`👤 ${player.name} (${player.class})`);
+                    this.addOutput(`❤️ HP: ${player.hp}/${player.maxHp} | ⚔️ Атака: ${player.attack}`);
+                    this.addOutput(`⭐ Уровень ${player.level} | ✨ Опыт: ${player.xp}/${player.xpToNext}`);
+                    this.addOutput(`🎒 Предметов: ${player.inventory.length}/8`);
+                    
+                } else if (command === 'help') {
+                    this.showHelp();
+                    
+                } else {
+                    this.addOutput(`❓ Неизвестная команда: ${command}`);
+                    this.addOutput('Введите help для справки');
+                }
+
+                this.updateUI();
+            }
+
+            takeItem(itemName) {
+                const location = this.gameState.world[this.gameState.currentLocation];
+                const player = this.gameState.player;
+
+                if (player.inventory.length >= 8) {
+                    this.addOutput('❌ Инвентарь полон!');
+                    return;
+                }
+
+                const itemIndex = location.items.findIndex(item => 
+                    item.name.toLowerCase() === itemName.toLowerCase()
+                );
+
+                if (itemIndex === -1) {
+                    this.addOutput(`❌ Предмет '${itemName}' не найден`);
+                    return;
+                }
+
+                const item = location.items.splice(itemIndex, 1)[0];
+                player.inventory.push(item);
+                
+                this.addOutput(`✅ Взято: ${item.name}`);
+                this.gameState.score += 2;
+            }
+
+            showInventory() {
+                const inventory = this.gameState.player.inventory;
+
+                if (inventory.length === 0) {
+                    this.addOutput('🎒 Инвентарь пуст');
+                    return;
+                }
+
+                this.addOutput('🎒 Содержимое инвентаря:');
+                inventory.forEach(item => {
+                    this.addOutput(`- ${item.name}`);
+                });
+            }
+
+            useItem(itemName) {
+                const player = this.gameState.player;
+                
+                const itemIndex = player.inventory.findIndex(item => 
+                    item.name.toLowerCase() === itemName.toLowerCase()
+                );
+
+                if (itemIndex === -1) {
+                    this.addOutput(`❌ Предмет '${itemName}' не найден в инвентаре`);
+                    return;
+                }
+
+                const item = player.inventory[itemIndex];
+                
+                switch (item.type) {
+                    case 'potion':
+                        const healAmount = Math.min(item.heal, player.maxHp - player.hp);
+                        player.hp += healAmount;
+                        this.addOutput(`🧪 Выпито ${item.name}: +${healAmount} HP. Текущее HP: ${player.hp}`);
+                        break;
+                        
+                    case 'weapon':
+                        player.attack += item.attackBonus;
+                        this.addOutput(`⚔️ Экипировано ${item.name}: +${item.attackBonus} атака. Атака теперь: ${player.attack}`);
+                        break;
+                        
+                    case 'key':
+                        this.addOutput(`🔑 Используется ${item.name}. Где-то распахнулась дверь...`);
+                        break;
+                }
+                
+                player.inventory.splice(itemIndex, 1);
+                this.updateUI();
+            }
+
+            showHelp() {
+                this.addOutput('📋 Доступные команды:');
+                this.addOutput('hello <имя> - Установить имя персонажа');
+                this.addOutput('look - Осмотреться');
+                this.addOutput('move <направление> - Движение (north/south/east/west)');
+                this.addOutput('take <предмет> - Взять предмет');
+                this.addOutput('use <предмет> - Использовать предмет');
+                this.addOutput('inventory - Показать инвентарь');
+                this.addOutput('whoami - Информация о персонаже');
+                this.addOutput('help - Эта справка');
+            }
+
+            addOutput(message) {
+                const output = document.getElementById('game-output');
+                const div = document.createElement('div');
+                div.textContent = message;
+                output.appendChild(div);
+                output.scrollTop = output.scrollHeight;
+            }
+
+            restartGame() {
+                this.gameState.player.name = 'Герой';
+                this.gameState.player.hp = 20;
+                this.gameState.player.maxHp = 20;
+                this.gameState.player.attack = 5;
+                this.gameState.player.level = 1;
+                this.gameState.player.xp = 0;
+                this.gameState.player.xpToNext = 100;
+                this.gameState.player.inventory = [];
+                this.gameState.score = 0;
+                this.gameState.currentLocation = 'Площадь';
+                
+                document.getElementById('game-output').innerHTML = '=== НОВАЯ ИГРА ===';
+                this.updateUI();
+            }
+        }
+
+        // Создаем экземпляр игры
+        let simpleGame = new SimpleDungeonGame();
+
+        function startSimpleGame() {
+            document.getElementById('main-menu').classList.add('hidden');
+            document.getElementById('game-section').classList.remove('hidden');
+            simpleGame.updateUI();
+        }
+
+        function backToMenu() {
+            document.getElementById('game-section').classList.add('hidden');
+            document.getElementById('main-menu').classList.remove('hidden');
+        }
+
+        function restartGame() {
+            simpleGame.restartGame();
+        }
+
+        function executeCommand() {
+            const input = document.getElementById('command-input').value.trim();
+            if (!input) return;
+
+            document.getElementById('command-input').value = '';
+            simpleGame.addOutput(`> ${input}`);
+            simpleGame.executeCommand(input);
+        }
+
+        function showCommands() {
+            document.getElementById('commands-help').classList.remove('hidden');
+        }
+
+        function hideCommands() {
+            document.getElementById('commands-help').classList.add('hidden');
+        }
+
+        // Обработка Enter
+        document.getElementById('command-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                executeCommand();
+            }
+        });
+    </script>
+</body>
+</html>
